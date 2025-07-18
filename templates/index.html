@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Domain Name Suggester</title>
+    <script src="/static/script.js" defer></script>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; max-width: 800px; margin: auto; }
+        input[type="text"] { width: 80%; padding: 0.5rem; }
+        button { padding: 0.5rem 1rem; }
+        .domain { margin: 1rem 0; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; }
+        .available { color: green; font-weight: bold; }
+        .unavailable { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>AI-Powered Domain Name Suggestion Tool</h1>
+    <form method="post" action="/generate">
+        <input type="text" name="prompt" placeholder="e.g. A travel blog for solo female travelers" required>
+        <button type="submit">Suggest Domains</button>
+    </form>
+
+    {% if results %}
+        <h2>Results for: "{{ prompt }}"</h2>
+        {% for r in results %}
+            <div class="domain">
+                <strong>{{ r.domain }}</strong> - {{ r.reason }}<br>
+                <span class="{{ 'available' if r.available else 'unavailable' }}">
+                    {{ '✅ Available - Go Ahead, Register it..' if r.available else '❌ Not Available' }}
+                </span>
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
