@@ -14,9 +14,9 @@
     </style>
 </head>
 <body>
-    <h1>AI-Powered Domain Name Suggestion Tool</h1>
+    <h1>NameSense - Your AI Powered Domain Name Suggestion Tool</h1>
     <form method="post" action="/generate">
-        <input type="text" name="prompt" placeholder="e.g. A travel blog for solo female travelers" required>
+        <input type="text" name="prompt" placeholder="e.g. A travel blog for solo travelers" required>
         <button type="submit">Suggest Domains</button>
     </form>
 
@@ -24,10 +24,18 @@
         <h2>Results for: "{{ prompt }}"</h2>
         {% for r in results %}
             <div class="domain">
-                <strong>{{ r.domain }}</strong> - {{ r.reason }}<br>
-                <span class="{{ 'available' if r.available else 'unavailable' }}">
-                    {{ '✅ Available - Go Ahead, Register it..' if r.available else '❌ Not Available' }}
-                </span>
+                {% if r.available%}
+                    <a href="https://www.domain.com/products/domain/domain-search-results?domainName={{ r.domain }}"
+                        target="_blank"
+                        style="text-decoration: none; color: inherit;">
+                        <strong>{{ r.domain }}</strong>
+                    </a> - {{ r.reason}}<br>
+
+                    <span class="available">✅ Available - Go Ahead, Register it..</span>
+                {% else %}
+                    <strong>{{ r.domain }}</strong> - {{ r.reason}}<br>
+                    <span class="unavailable">❌ Unavailable - Try another one</span>
+                {% endif %}
             </div>
         {% endfor %}
     {% endif %}
