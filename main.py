@@ -33,7 +33,8 @@ async def home(request: Request):
 @app.post("/generate", response_class=HTMLResponse)
 async def generate(request: Request, prompt: str = Form(...)):
     domain_ideas = await get_domain_suggestions(prompt)
-    available_domains = await check_availability(domain_ideas)
+    gemini_domains = await check_availability(domain_ideas)
+    available_domains = [d for d in gemini_domains if d.get("available") == True]
 
     return templates.TemplateResponse("index.html", {
         "request": request,
@@ -45,9 +46,9 @@ async def generate(request: Request, prompt: str = Form(...)):
 async def get_domain_suggestions(prompt: str):
     full_prompt = f"""
 You are an AI that suggests unique, brandable, and available domain names.
-Given this idea: "{prompt}", generate 7 domain name suggestions with TLDs from .com, .ai, .io, and .dev.
-Avoid famous brand names or trademarks. Make them catchy, easy to remember, and pronounceable.
-For each domain name, include a 1 to 2 sentence explanation.
+Given this idea from a client: "{prompt}", generate 5 domain name suggestions with TLDs from .com, .ai, .io, and .dev.
+Provide names that are not already registered, and avoid famous brand names or trademarks. Make them catchy, easy to remember, and pronounceable.
+For each domain name, include a 1 to 2 sentence explanation about why the suggested domain name is a good fit.
 Respond in this format:
 
 domain1.tld - short explanation
