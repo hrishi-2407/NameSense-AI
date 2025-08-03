@@ -46,7 +46,7 @@ async def generate(request: Request, prompt: str = Form(...)):
 async def get_domain_suggestions(prompt: str):
     full_prompt = f"""
 You are an AI that suggests unique, brandable, and available domain names.
-Given this idea from a client: "{prompt}", generate 5 domain name suggestions with TLDs from .com, .ai, .io, and .dev.
+Given this idea from a client: "{prompt}", generate 6 domain name suggestions with TLDs from .com, .ai, .io, and .dev.
 Provide names that are not already registered, and avoid famous brand names or trademarks. Make them catchy, easy to remember, and pronounceable.
 For each domain name, include a 1 to 2 sentence explanation about why the suggested domain name is a good fit.
 Respond in this format:
