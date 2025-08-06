@@ -35,6 +35,8 @@ async def generate(request: Request, prompt: str = Form(...)):
     domain_ideas = await get_domain_suggestions(prompt)
     gemini_domains = await check_availability(domain_ideas)
     available_domains = [d for d in gemini_domains if d.get("available") == True]
+    print(f"\nGemini domains ============ : \n{gemini_domains}")
+    print(f"\nAvailable domains ============ : \n{available_domains}")
 
     return templates.TemplateResponse("index.html", {
         "request": request,
@@ -45,12 +47,15 @@ async def generate(request: Request, prompt: str = Form(...)):
 
 async def get_domain_suggestions(prompt: str):
     full_prompt = f"""
-You are an AI that suggests unique, brandable, and available domain names.
-Given this idea from a client: "{prompt}", generate 6 domain name suggestions with TLDs from .com, .ai, .io, and .dev.
-Provide names that are not already registered, and avoid famous brand names or trademarks. Make them catchy, easy to remember, and pronounceable.
-For each domain name, include a 1 to 2 sentence explanation about why the suggested domain name is a good fit.
-Respond in this format:
+You are an AI that suggests unique, brandable, and **available** domain names for the following business idea: "{prompt}".
 
+Follow these rules:
+- Include TLDs like .co, .biz, .xyz, .app or .dev
+- Avoid famous brand names or trademarks. The names should be catchy, easy to remember, and pronounceable.
+- Include unique prefixes or suffixes (get, try, hq, labs, hq, app) to make the names more distinctive.
+- For each domain name, include a 1 to 2 sentence explanation about why the suggested domain name is a good fit.
+
+Generate 5 domain names that are likely to be available.  Respond strictly in this format only:
 domain1.tld - short explanation
 domain2.tld - short explanation
 ...
